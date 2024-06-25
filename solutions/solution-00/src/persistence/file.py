@@ -10,56 +10,67 @@ from utils.constants import FILE_STORAGE_FILENAME
 
 
 class FileRepository(Repository):
-    """File Repository"""
+    # File Repository with conditional persistence logic
 
-    __filename = FILE_STORAGE_FILENAME
-    __data: dict[str, list] = {
-        "country": [],
-        "user": [],
-        "amenity": [],
-        "city": [],
-        "review": [],
-        "place": [],
-        "placeamenity": [],
-    }
+    def __init__(self, storage_type: str = 'file') -> None:
+        # Initialize repo with optional storage type
+        # Default: file-based
+        self.storage_type = storage_type
+        self.__data = {}
 
-    def __init__(self) -> None:
-        """Calls reload method"""
-        self.reload()
+        if self.storage_type == "file":
+            self.reload()
 
     def _save_to_file(self):
-        """Helper method to save the current object data to the file"""
+        # Helper method to save data to JSON (file-based storage)
         serialized = {
             k: [v.to_dict() for v in l if type(v) is not dict]
             for k, l in self.__data.items()
         }
 
-        with open(self.__filename, "w") as file:
+        with open(FILE_STORAGE_FILENAME, "w") as file:
             json.dump(serialized, file)
+
+    def _save_to_db(self, data: Base, session):
+        # Saves obj to the DB for DB storage
+        session.add(data)
+        session.commit()
 
     def get_all(self, model_name: str):
         """Get all objects of a given model"""
-        return self.__data.get(model_name, [])
+        if self.storage_type == "file":
+            return self.__data.get(model_name, [])
+        elif self.storage_type == "database":
+            raise NotImplementedError("Database retrieval not implemented")
+        else:
+            raise ValueError("Invalid storage type: {}".format(self.storage_type))
 
     def get(self, model_name: str, obj_id: str):
-        """Get an object by its ID"""
-        for obj in self.get_all(model_name):
-            if obj.id == obj_id:
-                return obj
-        return None
+        # Get object by ID
+        if self.storage_type == "file":
+            for obj in self.getall(model_name):
+                if obj.id == obj_id:
+                    return obj
+                return None
+        elif self.storage_type == "database":
+            # Delegate to DB retrieval logic by Id
+            raise NotImplementedError("Database retrieval not implemented.")
+        else:
+            raise ValueError("Invalid storage type {}".format(self.storage_type
 
+
+                                                              ))
     def reload(self):
-        """Reloads the data from the file"""
-        file_data = {}
-        try:
-            with open(self.__filename, "r") as file:
-                file_data = json.load(file)
-        except FileNotFoundError:
-            from src.models.country import Country
+        # Reloads the data from the file (only for filebased)
+        if self.storage_type == "file":
+            file_data = {}
+            try:
+                with open(FILE_STORAGE_FILENAME, "r") as file:
+                    file_data = json.load(file)
+            except FileNotFoundError:
+                pass
+            self.__data = file_data
 
-            self.__data["country"] = [Country("Uruguay", "UY")]
-
-            self._save_to_file()
 
         from src.models.amenity import Amenity, PlaceAmenity
         from src.models.city import City
@@ -94,7 +105,7 @@ class FileRepository(Repository):
                 self.save(data=instance, save_to_file=False)
 
     def save(self, data: Base, save_to_file=True):
-        """Save an object to the repository"""
+        # Save an object to the repository
         model: str = data.__class__.__name__.lower()
 
         if model not in self.__data:
