@@ -113,8 +113,12 @@ class FileRepository(Repository):
 
         self.__data[model].append(data)
 
-        if save_to_file:
+        if self.storage_type == "file" and save_to_file:
             self._save_to_file()
+        elif self.storage_type == "database":
+            raise NotImplementedError("Database storage not implemented.")
+        else:
+            raise ValueError("Invalid storage type: {}".format(self.storage_type))
 
     def update(self, obj: Base):
         """Update an object in the repository"""
@@ -124,20 +128,26 @@ class FileRepository(Repository):
             if o.id == obj.id:
                 obj.updated_at = datetime.now()
                 self.__data[cls][i] = obj
-                self._save_to_file()
-                return obj
 
-        return None
+                if self.storage_type == "file":
+                    self._save_to_file()
+                elif self.storage_type == "database":
+                    raise NotImplementedError("Database storage not implemented.")
+                return obj
+            return
 
     def delete(self, obj: Base):
-        """Delete an object from the repository"""
+        # Delete an object from the repository
+
         class_name = obj.__class__.__name__.lower()
 
         if obj not in self.__data[class_name]:
             return False
-
         self.__data[class_name].remove(obj)
 
-        self._save_to_file()
-
-        return True
+        if self.storage_type == "file":
+            self._save_to_file()
+        elif self.storage_type == "database":
+            raise NotImplementedError("Database storage not implemented.")
+            return obj
+        return
