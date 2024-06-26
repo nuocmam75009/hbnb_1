@@ -12,6 +12,8 @@ class Review(db.Model):
     user_id = db.Column(db.String(36), nullable=False)
     comment = db.Column(db.String(2000))
     rating = db.Column(db.Float, nullable=False)
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp(), nullable=False)
+    updated_at = db.Column(db.DateTime, onupdate=db.func.current_timestamp(), nullable=False)
 
     def __repr__(self) -> str:
 

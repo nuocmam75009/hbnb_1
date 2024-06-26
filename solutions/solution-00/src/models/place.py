@@ -18,6 +18,8 @@ class Place(db.Model):
     number_of_rooms = db.Column(db.Int, nullable=False)
     number_of_bathrooms = db.Column(db.Int, nullable=False)
     max_guests = db.Column(db.Int, nullable=False)
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp(), nullable=False)
+    updated_at = db.Column(db.DateTime, onupdate=db.func.current_timestamp(), nullable=False)
 
     def __repr__(self) -> str:
 

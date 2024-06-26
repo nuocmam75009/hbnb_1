@@ -7,6 +7,8 @@ class Amenity(db.Model):
     __tablename__ = 'Amenities'
 
     name = db.Column(db.String(255))
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp(), nullable=False)
+    updated_at = db.Column(db.DateTime, onupdate=db.func.current_timestamp(), nullable=False)
 
     def __repr__(self) -> str:
 
