@@ -3,12 +3,13 @@ Amenity related functionality
 """
 
 from src.models.base import Base
+from flask_sqlalchemy import SQLAlchemy
+db = SQLAlchemy()
 
 
-class Amenity(Base):
-    """Amenity representation"""
+class Amenity(db.Model):
 
-    name: str
+    name = db.Column(db.String(255))
 
     def __init__(self, name: str, **kw) -> None:
         """Dummy init"""
@@ -61,18 +62,11 @@ class Amenity(Base):
 class PlaceAmenity(Base):
     """PlaceAmenity representation"""
 
-    place_id: str
-    amenity_id: str
-
-    def __init__(self, place_id: str, amenity_id: str, **kw) -> None:
-        """Dummy init"""
-        super().__init__(**kw)
-
-        self.place_id = place_id
-        self.amenity_id = amenity_id
+    place_id = db.Column(db.String(255))
+    amenity_id = db.Column(db.String(255))
 
     def __repr__(self) -> str:
-        """Dummy repr"""
+        
         return f"<PlaceAmenity ({self.place_id} - {self.amenity_id})>"
 
     def to_dict(self) -> dict:
