@@ -1,7 +1,6 @@
-"""
-Country related functionality
-"""
-
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Column, String, Datetime, func
+db = SQLAlchemy()
 
 class Country:
     """
@@ -12,8 +11,8 @@ class Country:
     This class is used to get and list countries
     """
 
-    name: str
-    code: str
+    name = Column(String(255), nullable=False)
+    code = Column(String(2), primary_key=True, nullable=False)
     cities: list
 
     def __init__(self, name: str, code: str, **kw) -> None:

@@ -1,16 +1,15 @@
-"""
-City related functionality
-"""
-
 from src.models.base import Base
 from src.models.country import Country
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Column, String, Datetime, func
+db = SQLAlchemy()
 
+class City():
+    __tablename__ = 'Cities'
 
-class City(Base):
-    """City representation"""
-
-    name: str
-    country_code: str
+    name = db.Column(db.String(255), nullable=False)
+    code = db.Column(db.String(2), primary_key=True, nullable=False)
+    id = db.Column(db.String(36), nullable=False)
 
     def __init__(self, name: str, country_code: str, **kw) -> None:
         """Dummy init"""

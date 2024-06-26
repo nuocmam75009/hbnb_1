@@ -1,24 +1,15 @@
-"""
-Amenity related functionality
-"""
-
 from src.models.base import Base
 from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 
 class Amenity(db.Model):
+    __tablename__ = 'Amenities'
 
     name = db.Column(db.String(255))
 
-    def __init__(self, name: str, **kw) -> None:
-        """Dummy init"""
-        super().__init__(**kw)
-
-        self.name = name
-
     def __repr__(self) -> str:
-        """Dummy repr"""
+
         return f"<Amenity {self.id} ({self.name})>"
 
     def to_dict(self) -> dict:
@@ -60,13 +51,13 @@ class Amenity(db.Model):
 
 
 class PlaceAmenity(Base):
-    """PlaceAmenity representation"""
+    __tablename__ = 'Places_Amenities'
 
     place_id = db.Column(db.String(255))
     amenity_id = db.Column(db.String(255))
 
     def __repr__(self) -> str:
-        
+
         return f"<PlaceAmenity ({self.place_id} - {self.amenity_id})>"
 
     def to_dict(self) -> dict:

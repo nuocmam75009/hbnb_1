@@ -1,29 +1,24 @@
-"""
-User related functionality
-"""
-
 from src.models.base import Base
+from flask_sqlalchemy import SQLAlchemy
+db = SQLAlchemy()
 
+class User(db.Model):
+    __tablename__ = "Users"
 
-class User(Base):
-    """User representation"""
+    id = db.Column(db.String(36), primary_key=True)
+    first_name = db.Column(db.String(255))
+    last_name = db.Column(db.String(255))
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(128), nullable=False)  # Ensure secure storage
+    is_admin = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp(), nullable=False)
+    updated_at = db.Column(db.DateTime, onupdate=db.func.current_timestamp(), nullable=False)
 
-    email: str
-    first_name: str
-    last_name: str
+def __repr__(self) -> str:
 
-    def __init__(self, email: str, first_name: str, last_name: str, **kw):
-        """Dummy init"""
-        super().__init__(**kw)
-        self.email = email
-        self.first_name = first_name
-        self.last_name = last_name
+    return f"<User {self.id} ({self.email})>"
 
-    def __repr__(self) -> str:
-        """Dummy repr"""
-        return f"<User {self.id} ({self.email})>"
-
-    def to_dict(self) -> dict:
+def to_dict(self) -> dict:
         """Dictionary representation of the object"""
         return {
             "id": self.id,
@@ -34,8 +29,8 @@ class User(Base):
             "updated_at": self.updated_at.isoformat(),
         }
 
-    @staticmethod
-    def create(user: dict) -> "User":
+@staticmethod
+def create(user: dict) -> "User":
         """Create a new user"""
         from src.persistence import repo
 
@@ -51,8 +46,8 @@ class User(Base):
 
         return new_user
 
-    @staticmethod
-    def update(user_id: str, data: dict) -> "User | None":
+@staticmethod
+def update(user_id: str, data: dict) -> "User | None":
         """Update an existing user"""
         from src.persistence import repo
 

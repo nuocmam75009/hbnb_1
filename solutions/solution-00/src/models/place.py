@@ -1,48 +1,26 @@
-"""
-Place related functionality
-"""
-
-from src.models.base import Base
 from src.models.city import City
 from src.models.user import User
+from flask_sqlalchemy import SQLAlchemy
+db = SQLAlchemy()
 
+class Place(db.Model):
+    __tablename__ = 'Places'
 
-class Place(Base):
-    """Place representation"""
-
-    name: str
-    description: str
-    address: str
-    latitude: float
-    longitude: float
-    host_id: str
-    city_id: str
-    price_per_night: int
-    number_of_rooms: int
-    number_of_bathrooms: int
-    max_guests: int
-
-    def __init__(self, data: dict | None = None, **kw) -> None:
-        """Dummy init"""
-        super().__init__(**kw)
-
-        if not data:
-            return
-
-        self.name = data.get("name", "")
-        self.description = data.get("description", "")
-        self.address = data.get("address", "")
-        self.city_id = data["city_id"]
-        self.latitude = float(data.get("latitude", 0.0))
-        self.longitude = float(data.get("longitude", 0.0))
-        self.host_id = data["host_id"]
-        self.price_per_night = int(data.get("price_per_night", 0))
-        self.number_of_rooms = int(data.get("number_of_rooms", 0))
-        self.number_of_bathrooms = int(data.get("number_of_bathrooms", 0))
-        self.max_guests = int(data.get("max_guests", 0))
+    place_id = db.column(db.String(36), primary_key=True, nullable=False)
+    name = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.String(2000), nullable=False)
+    address = db.Column(db.String(255), nullable=False)
+    latitude = db.Column(db.Float, nullable=False)
+    longitude = db.Column(db.Float, nullable=False)
+    host_id = db.Column(db.Str(36), nullable=False)
+    city_id = db.Column(db.Str(36), nullable=False)
+    price_per_night = db.Column(db.Int, nullable=False)
+    number_of_rooms = db.Column(db.Int, nullable=False)
+    number_of_bathrooms = db.Column(db.Int, nullable=False)
+    max_guests = db.Column(db.Int, nullable=False)
 
     def __repr__(self) -> str:
-        """Dummy repr"""
+
         return f"<Place {self.id} ({self.name})>"
 
     def to_dict(self) -> dict:

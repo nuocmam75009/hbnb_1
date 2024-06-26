@@ -121,7 +121,7 @@ class FileRepository(Repository):
             raise ValueError("Invalid storage type: {}".format(self.storage_type))
 
     def update(self, obj: Base):
-        """Update an object in the repository"""
+        # Update an object in the repository"""
         cls = obj.__class__.__name__.lower()
 
         for i, o in enumerate(self.__data[cls]):

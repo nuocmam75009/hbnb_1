@@ -1,33 +1,20 @@
-"""
-Review related functionality
-"""
-
 from src.models.base import Base
 from src.models.place import Place
 from src.models.user import User
+from flask_sqlalchemy import SQLAlchemy
 
+db = SQLAlchemy()
 
-class Review(Base):
-    """Review representation"""
+class Review(db.Model):
+    __tablename__ = "Reviews"
 
-    place_id: str
-    user_id: str
-    comment: str
-    rating: float
-
-    def __init__(
-        self, place_id: str, user_id: str, comment: str, rating: float, **kw
-    ) -> None:
-        """Dummy init"""
-        super().__init__(**kw)
-
-        self.place_id = place_id
-        self.user_id = user_id
-        self.comment = comment
-        self.rating = rating
+    place_id = db.Column(db.String(36), primary_key=True, nullable=False)
+    user_id = db.Column(db.String(36), nullable=False)
+    comment = db.Column(db.String(2000))
+    rating = db.Column(db.Float, nullable=False)
 
     def __repr__(self) -> str:
-        """Dummy repr"""
+
         return f"<Review {self.id} - '{self.comment[:25]}...'>"
 
     def to_dict(self) -> dict:

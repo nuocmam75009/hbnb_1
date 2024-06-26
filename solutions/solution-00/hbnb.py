@@ -4,6 +4,7 @@ from src import create_app
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
 
+
 app = create_app()
 
 if __name__ == "__main__":
