@@ -1,8 +1,9 @@
 """ Another way to run the app"""
 
 from src import create_app
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy, create_engine
 from flask import Flask
+from sqlalchemy.orm import sessionmaker
 
 
 app = create_app()

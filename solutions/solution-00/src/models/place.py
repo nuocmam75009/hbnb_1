@@ -1,6 +1,8 @@
 from src.models.city import City
 from src.models.user import User
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Column, String, Integer, Float, DateTime
+
 db = SQLAlchemy()
 
 class Place(db.Model):
@@ -12,12 +14,12 @@ class Place(db.Model):
     address = db.Column(db.String(255), nullable=False)
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
-    host_id = db.Column(db.Str(36), nullable=False)
-    city_id = db.Column(db.Str(36), nullable=False)
-    price_per_night = db.Column(db.Int, nullable=False)
-    number_of_rooms = db.Column(db.Int, nullable=False)
-    number_of_bathrooms = db.Column(db.Int, nullable=False)
-    max_guests = db.Column(db.Int, nullable=False)
+    host_id = db.Column(db.String(36), nullable=False)
+    city_id = db.Column(db.String(36), nullable=False)
+    price_per_night = db.Column(db.Integer, nullable=False)
+    number_of_rooms = db.Column(db.Integer, nullable=False)
+    number_of_bathrooms = db.Column(db.Integer, nullable=False)
+    max_guests = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp(), nullable=False)
     updated_at = db.Column(db.DateTime, onupdate=db.func.current_timestamp(), nullable=False)
 

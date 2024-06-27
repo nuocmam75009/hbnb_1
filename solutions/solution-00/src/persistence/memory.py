@@ -12,9 +12,6 @@ from utils.populate import populate_db
 class MemoryRepository(Repository):
     """
     A Repository that does not persist data, it only stores it in memory
-
-
-
     Every time the server is restarted, the data is lost
     """
 

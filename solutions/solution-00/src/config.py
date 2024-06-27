@@ -17,6 +17,7 @@ class Config(ABC):
     This class should not be instantiated directly
     """
 
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
     DEBUG = False
     TESTING = False
 

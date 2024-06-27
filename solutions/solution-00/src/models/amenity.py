@@ -1,21 +1,29 @@
 from src.models.base import Base
 from flask_sqlalchemy import SQLAlchemy
+
 db = SQLAlchemy()
 
 
 class Amenity(db.Model):
     __tablename__ = 'Amenities'
 
-    name = db.Column(db.String(255))
+    name = db.Column('name',db.String(255))
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp(), nullable=False)
     updated_at = db.Column(db.DateTime, onupdate=db.func.current_timestamp(), nullable=False)
+
+    def __init__(self, name: str, **kw) -> None:
+
+        super().__init__(**kw)
+
+        self.name = name
+
 
     def __repr__(self) -> str:
 
         return f"<Amenity {self.id} ({self.name})>"
 
     def to_dict(self) -> dict:
-        """Dictionary representation of the object"""
+        # Dictionary representation of the object
         return {
             "id": self.id,
             "name": self.name,
@@ -25,7 +33,7 @@ class Amenity(db.Model):
 
     @staticmethod
     def create(data: dict) -> "Amenity":
-        """Create a new amenity"""
+        # Create a new amenity
         from src.persistence import repo
 
         amenity = Amenity(**data)
@@ -57,6 +65,15 @@ class PlaceAmenity(Base):
 
     place_id = db.Column(db.String(255))
     amenity_id = db.Column(db.String(255))
+
+
+    def __init__(self, place_id: str, amenity_id: str, **kw) -> None:
+        """Dummy init"""
+        super().__init__(**kw)
+
+        self.place_id = place_id
+        self.amenity_id = amenity_id
+
 
     def __repr__(self) -> str:
 
