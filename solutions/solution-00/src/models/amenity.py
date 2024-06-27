@@ -60,7 +60,7 @@ class Amenity(db.Model):
         return amenity
 
 
-class PlaceAmenity(Base):
+class PlaceAmenity(db.Model):
     __tablename__ = 'Places_Amenities'
 
     place_id = db.Column(db.String(255))

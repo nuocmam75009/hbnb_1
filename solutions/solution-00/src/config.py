@@ -9,6 +9,8 @@ This module exports configuration classes for the Flask application.
 
 from abc import ABC
 import os
+import sqlalchemy
+
 
 
 class Config(ABC):
@@ -76,8 +78,11 @@ class ProductionConfig(Config):
 
     TESTING = False
     DEBUG = False
+    app.config.from_object('config.DevelopmentConfig' if os.environ.get('ENV') == 'development' else 'config.ProductionConfig')
+    db = SQLAlchemy(app)
 
     SQLALCHEMY_DATABASE_URI = os.getenv(
         "DATABASE_URL",
         "postgresql://user:password@localhost/hbnb_prod"
     )
+
