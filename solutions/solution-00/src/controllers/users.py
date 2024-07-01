@@ -1,15 +1,13 @@
+from flask import abort, request
+from src.models.user import User
+
 """
 Users controller module
 """
 
-from flask import abort, request
-from src.models.user import User
-
-
 def get_users():
     """Returns all users"""
     users: list[User] = User.get_all()
-
     return [user.to_dict() for user in users]
 
 
@@ -36,6 +34,16 @@ def get_user_by_id(user_id: str):
 
     if not user:
         abort(404, f"User with ID {user_id} not found")
+
+    return user.to_dict(), 200
+
+
+def get_user_by_email(email: str):
+    """Returns a user by email"""
+    user: User | None = User.get_by_email(email)
+
+    if not user:
+        abort(404, f"User with email {email} not found")
 
     return user.to_dict(), 200
 
