@@ -5,6 +5,11 @@ from flask import request, jsonify
 from werkzeug.security import check_password_hash
 import jwt
 from datetime import datetime, timedelta
+from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
+from hbnb import app, config
+
+
+jwt = JWTManager(app)
 
 
 from src.controllers.users import (
@@ -18,12 +23,32 @@ from src.controllers.users import (
 
 users_bp = Blueprint("users", __name__, url_prefix="/users")
 
-users_bp.route("/", methods=["GET"])(get_users)
-users_bp.route("/", methods=["POST"])(create_user)
+@users_bp.route("/", methods=["GET"])
+@jwt_required()
+def get_users():
+    return get_users()
 
-users_bp.route("/<user_id>", methods=["GET"])(get_user_by_id)
-users_bp.route("/<user_id>", methods=["PUT"])(update_user)
-users_bp.route("/<user_id>", methods=["DELETE"])(delete_user)
+@users_bp.route("/", methods=["POST"])
+@jwt_required()
+def create_user():
+    return create_user()
+
+@users_bp.route("/<user_id>", methods=["GET"])
+@jwt_required()
+def get_user_by_id(user_id):
+    return get_user_by_id(user_id)
+
+@users_bp.route("/<user_id>", methods=["PUT"])
+@jwt_required()
+def update_user(user_id):
+    return update_user(user_id)
+
+@users_bp.route("/<user_id>", methods=["DELETE"])
+@jwt_required()
+def delete_user(user_id):
+    return delete_user(user_id)
+
+
 
 @users_bp.route("/login", methods=["POST"])
 def login():
