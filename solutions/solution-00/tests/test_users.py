@@ -7,7 +7,6 @@ import unittest
 from unittest.mock import patch
 from src.models.user import User
 
-
 class TestUserModel(unittest.TestCase):
     def test_create_user_valid_data(self):
         # Tests creating a new User object with valid data
