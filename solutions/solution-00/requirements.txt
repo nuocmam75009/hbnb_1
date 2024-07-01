@@ -5,3 +5,6 @@ flask-MySQLAlchemy
 gunicorn
 MySQLAlchemy
 python-dotenv: 1.0.1
+Flask-Bcrypt: 1.0.1
+Flask-JWT-Extended: 4.6.0
+JWT: 4.2.0
