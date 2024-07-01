@@ -1,7 +1,9 @@
 from src.models.base import Base
 from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
 
 
+bcrypt = Bcrypt()
 db = SQLAlchemy()
 
 class User(db.Model):
@@ -15,13 +17,20 @@ class User(db.Model):
     is_admin = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp(), nullable=False)
     updated_at = db.Column(db.DateTime, onupdate=db.func.current_timestamp(), nullable=False)
+    password_hash = db.Column(db.String(128), nullable=False)
+
+def set_password(self, password: str) -> str:
+        self.password_hash = bcrypt.generate_password_hash(password).decode("utf-8")
+
+def check_password(self, password: str) -> str:
+        return bcrypt.check_password_hash(self.password_hash, password)
 
 def __repr__(self) -> str:
 
     return f"<User {self.id} ({self.email})>"
 
 def to_dict(self) -> dict:
-        """Dictionary representation of the object"""
+        #Dictionary representation of the object
         return {
             "id": self.id,
             "email": self.email,

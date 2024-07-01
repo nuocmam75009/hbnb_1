@@ -15,15 +15,16 @@
 from src.models.base import Base
 from src.persistence.repository import Repository
 
-
 class DBRepository(Repository):
     """Dummy DB repository"""
 
     def __init__(self) -> None:
-        """Not implemented"""
+        super().__init__()
+        # Add your implementation here
 
     def get_all(self, model_name: str) -> list:
         """Not implemented"""
+        # Add your implementation here
         return []
 
     def get(self, model_name: str, obj_id: str) -> Base | None:
@@ -31,6 +32,7 @@ class DBRepository(Repository):
 
     def reload(self) -> None:
         """Not implemented"""
+        pass
 
     def save(self, obj: Base) -> None:
         """Not implemented"""
