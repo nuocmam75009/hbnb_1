@@ -1,15 +1,7 @@
-""" Another way to run the app"""
-
+# Version: 1.0
 from src import create_app
 from flask_sqlalchemy import SQLAlchemy, create_engine
 from flask import Flask
-from sqlalchemy.orm import sessionmaker
-from flask_jwt_extended import JWTManager
-import secrets
-from src import create_app
-from flask_sqlalchemy import SQLAlchemy, create_engine
-from flask import Flask
-from sqlalchemy.orm import sessionmaker
 from flask_jwt_extended import JWTManager
 import secrets
 
