@@ -12,9 +12,9 @@ class TestUserModel(unittest.TestCase):
         # Tests creating a new User object with valid data
         data = {
             "email": "test@example.com",
-            "first_name": "John",
-            "last_name": "Doe",
-            "password": "password123",
+            "first_name": "Barcola",
+            "last_name": "Bradley",
+            "password": "ThuramTesNulDeFou",
             "is_admin": False
         }
         with patch("src.models.user.User.get_all") as mock_get_all, \
