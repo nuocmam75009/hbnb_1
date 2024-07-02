@@ -1,0 +1,48 @@
+CREATE TABLE Users (
+    id VARCHAR(36) PRIMARY KEY,
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
+    email VARCHAR(120) UNIQUE NOT NULL,
+    password VARCHAR(128) NOT NULL,
+    is_admin BOOLEAN DEFAULT FALSE,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+    password_hash VARCHAR(128) NOT NULL
+);
+
+CREATE TABLE Reviews (
+    place_id VARCHAR(36) PRIMARY KEY NOT NULL,
+    user_id VARCHAR(36) NOT NULL,
+    comment VARCHAR(2000),
+    rating FLOAT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
+);
+
+
+CREATE TABLE Countries (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    code VARCHAR(10) NOT NULL
+);
+
+CREATE TABLE Cities (
+    id SERIAL PRIMARY KEY,
+    country_id INTEGER NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    FOREIGN KEY (Country.id) REFERENCES countries (id)
+);
+
+CREATE TABLE Places_Amenities (
+    place_id VARCHAR(255),
+    amenity_id VARCHAR(255),
+    PRIMARY KEY (place_id, amenity_id),
+    FOREIGN KEY (place_id) REFERENCES Places(place_id),
+    FOREIGN KEY (amenity_id) REFERENCES Amenities(amenity_id)
+);
+
+CREATE TABLE Amenities (
+    name VARCHAR(255) PRIMARY KEY NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
+);
