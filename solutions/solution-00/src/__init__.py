@@ -48,8 +48,6 @@ def create_app(config_class="src.config.DevelopmentConfig") -> Flask:
     return app
 
 
-
-
 def register_extensions(app: Flask) -> None:
     """Register the extensions for the Flask app"""
     cors.init_app(app, resources={r"/api/*": {"origins": "*"}})
