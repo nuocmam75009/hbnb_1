@@ -1,7 +1,8 @@
 from src.models.base import Base
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
-
+from flask_jwt_extended import create_access_token
+from flask import jsonify
 
 bcrypt = Bcrypt()
 db = SQLAlchemy()
@@ -18,6 +19,13 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp(), nullable=False)
     updated_at = db.Column(db.DateTime, onupdate=db.func.current_timestamp(), nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
+
+#  Modify login process to include role information in the JWT.
+def login(self) -> str:
+        additional_claims = {"is_admin": self.is_admin}
+        access_token = create_access_token(identity=self.id, additional_claims=additional_claims)
+        return jsonify(access_token=access_token)
+
 
 def set_password(self, password: str) -> str:
         self.password_hash = bcrypt.generate_password_hash(password).decode("utf-8")
